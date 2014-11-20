@@ -1,2 +1,2 @@
-GenomeKey2
+GenomeKey: for COSMOS 2.0
 ==========
