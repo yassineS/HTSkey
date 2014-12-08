@@ -143,3 +143,46 @@ if __name__ == '__main__':
 
     ex = Execution.start(cosmos_app, 'Simple', 'out/simple', max_attempts=3, restart=True, skip_confirm=True)
     genomkey(ex)
+
+
+    class HaplotypeCaller(Tool):
+    name = "HaplotypeCaller"
+    cpu_req = 8
+    mem_req = 16*1024
+     time_req = 12*60
+    inputs = [inp(format='bam', n='>0', forward=True), inp('target','bed',n=1)]
+    outputs = [out(format='vcf')]
+
+    def cmd(self, (in_bams, target_bed), out_vcf, intervals=None, glm='BOTH', emitRefConfidence='false'):
+
+        return r"""
+            {self.bin}
+            -T HaplotypeCaller \
+            -R {s[reference_fasta_path]} \
+            -nct {self.cpu_req} \
+            --dbsnp {s[dbsnp_path]} \
+            {inputs} \
+            -dcov 10000 \
+            -o {out_vcf} \
+            -A Coverage \
+            -A AlleleBalance \
+            -A AlleleBalanceBySample \
+            -A DepthPerAlleleBySample \
+            -A HaplotypeScore \
+            -A InbreedingCoeff \
+            -A QualByDepth \
+            -A FisherStrand \
+            -A MappingQualityRankSumTest \
+            {hmm} \
+            {intervals} \
+            {emitRefConfidence}
+        """, dict(
+            inputs=list2input(in_bams),
+            intervals=' --intervals {0}'.format(intervals) if intervals else '',
+            glm=' -glm {0}'.format(glm),
+            hmm='-pairHMM VECTOR_LOGLESS_CACHING' if self.pairHMM else '',
+            emitRefConfident='--emitRefConfidence %s' % emitRefConfidence,
+            s=s,
+            **locals()
+        )
+

@@ -82,33 +82,28 @@ class Bam_To_BWA(Tool):
         return (cmd_init + cmd_rg + cmd_main + cmd_out)
 
 
-# VCF to Annotation
+# VCF to Annovar
 
-class Vcf2Anno_in(Tool):
+class Vcf_To_Anno_in(Tool):
     name = "Convert VCF to Annovar"
-    inputs = ['vcf']
-    outputs = ['anno_in']
     forward_input = True
     time_req = 12 * 60
+    inputs = [inp(format='vcf', n='>0')]
+    outputs = [out(format='anno_in')]
 
     def cmd(self, i, s, p):
         return cmd_init + r"""
-
              {s[annovarext]} vcf2anno '{i[vcf][0]}' > $OUT.anno_in
-
-
-              """
-
-
+            """
 # Annovar
 
 class Annotate(Tool):
     name = "Annotate"
-    inputs = ['anno_in']
-    outputs = ['dir']
     forward_input = True
     time_req = 12 * 60
     mem_req = 12 * 1024
+    inputs = [inp(format='anno_in', n='>0')]
+    outputs = [out(format='dir')]
 
     def cmd(self, i, s, p):
         return cmd_init + r"""
@@ -117,16 +112,17 @@ class Annotate(Tool):
 
               """
 
-
 # Merge Annotation
 
-class MergeAnnotations(Tool):
+class Merge_Annotations(Tool):
     name = "Merge Annotations"
     inputs = ['anno_in', 'dir']
     outputs = ['dir']
     mem_req = 40 * 1024
     time_req = 12 * 60
     forward_input = True
+    inputs = [inp(format='anno_in', n='>0'), inp(format='dir')]
+    outputs = [out(format='dir')]
 
     def cmd(self, i, s, p):
         return cmd_init + r"""
@@ -141,12 +137,11 @@ class MergeAnnotations(Tool):
 
 # Indel Realigner
 
-class IndelRealigner(Tool):
-    name = "IndelRealigner"
+class Indel_Realigner(Tool):
+    name = "Indel Realigner"
     cpu_req = 4
     mem_req = 12 * 1024
     time_req = 4 * 60
-
     inputs = [inp(format='bam', n='>0')]
     outputs = [out(format='bam'), out(format='bai')]
 
@@ -178,15 +173,16 @@ class IndelRealigner(Tool):
             -L {p[chrom]} {s[gatk_indelrealign]}
             {inputs};
         """
+        return (cmd_init + cmd_main + cmd_out),{'inputs': _list2input(i['bam'], "-I ")}
 
 
-class MarkDuplicates(Tool):
+class Mark_Duplicates(Tool):
     name = "MarkDuplicates"
     cpu_req = 2
     mem_req = 4 * 1024
     time_req = 2 * 60
-    inputs = ['bam']
-    outputs = ['bam', 'bai', 'metrics']
+    inputs = [inp(format='bam', n='>0')]
+    outputs = [out(format='bam'), out(format='bai'), out(format='metrics')]
 
     def cmd(self, i, s, p):
         cmd_main = r"""
@@ -208,13 +204,13 @@ class MarkDuplicates(Tool):
         return (cmd_init + cmd_main + cmd_out), {'inputs': _list2input(i['bam'], " INPUT=")}
 
 
-class BaseQualityScoreRecalibration(Tool):
-    name = "BQSR"
+class BQSR(Tool):
+    name = "Base Quality Score Recalibration"
     cpu_req = 4
     mem_req = 12 * 1024
     time_req = 4 * 60
-    inputs = ['bam']
-    outputs = [TaskFile(name='bam', persist=True), TaskFile(name='bai', persist=True)]
+    inputs = [inp(format='bam', n='>0')]
+    outputs = [out(format='bam'), out(format='bai')]  # Need to check the persistence option
 
     # no -nt, -nct = 4
     def cmd(self, i, s, p):
@@ -251,13 +247,13 @@ class BaseQualityScoreRecalibration(Tool):
 
 
 # Mean to be used per sample
-class HaplotypeCaller(Tool):
-    name = "HaplotypeCaller"
+class Haplotype_Caller(Tool):
+    name = "Haplotype Caller"
     cpu_req = 4
     mem_req = 16 * 1024
     time_req = 12 * 60
-    inputs = ['bam']
-    outputs = [TaskFile(name='vcf', persist=True), TaskFile(name='vcf.idx', persist=True)]
+    inputs = [inp(format='bam', n='>0')]
+    outputs = [out(format='vcf'), out(format='vcf.idx')]
 
     # -nct available
     def cmd(self, i, s, p):
@@ -281,15 +277,14 @@ class HaplotypeCaller(Tool):
             """
         return (cmd_init + cmd_main + cmd_out_vcf), {'inputs': _list2input(i['bam'], "-I ")}
 
-
 # Joint Genotyping
-class GenotypeGVCFs(Tool):
-    name = "GenotypeGVCFs"
+class Genotype_GVCFs(Tool):
+    name = "Genotype GVCFs"
     cpu_req = 4
     mem_req = 12 * 1024
     time_req = 12 * 60
-    inputs = ['vcf']
-    outputs = ['vcf', 'vcf.idx']
+    inputs = [inp(format='vcf', n='>0')]
+    outputs = [out(format='vcf'), out(format='vcf.idx')]
 
     # -nt available
     def cmd(self, i, s, p):
@@ -314,19 +309,19 @@ class GenotypeGVCFs(Tool):
         return (cmd_init + cmd_main + cmd_out_vcf), {'inputs': _list2input(i['vcf'], "-V ")}
 
 
-class VariantQualityScoreRecalibration(Tool):
+class VQSR(Tool):
     """
     VQSR
     Note that HaplotypeScore is no longer applicable to indels
     see http://gatkforums.broadinstitute.org/discussion/2463/unified-genotyper-no-haplotype-score-annotated-for-indels
 
     """
-    name = "VQSR"
+    name = "Variant Quality Score Recalibration"
     cpu_req = 4
     mem_req = 12 * 1024
     time_req = 12 * 60
-    inputs = ['vcf']
-    outputs = ['vcf', 'vcf.idx', 'R']
+    inputs = [inp(format='vcf', n='>0')]
+    outputs = [out(format='vcf'), out(format='vcf.idx'), out(format='R')]
 
 
     # -nt available, -nct not available
@@ -395,13 +390,13 @@ class VariantQualityScoreRecalibration(Tool):
                 'inputs': _list2input(i['vcf'], "-input ")}
 
 
-class CombineVariants(Tool):
-    name = "CombineVariants"
+class Combine_Variants(Tool):
+    name = "Combine Variants"
     cpu_req = 4  # max CPU here
     mem_req = 12 * 1024
     time_req = 2 * 60
-    inputs = ['vcf']
-    outputs = ['vcf', 'vcf.idx']
+    inputs = [inp(format='vcf', n='>0')]
+    outputs = [out(format='vcf'), out(format='vcf.idx')]
 
     # -nt available, -nct not available
     # Too many -nt (20?) will cause write error
@@ -425,8 +420,22 @@ class CombineVariants(Tool):
             {inputs};
 
         """
-        return (cmd_init + cmd_main + cmd_out_vcf), {'inputs': _list2input(i['vcf'], "-V ")}
+        return (cmd_init + cmd_main + cmd_out_vcf), inputs =_list2input(i['vcf'], "-V "),
 
+     dict(
+            inputs=list2input(in_bams),
+            intervals=' --intervals {0}'.format(intervals) if intervals else '',
+            glm=' -glm {0}'.format(glm),
+            hmm='-pairHMM VECTOR_LOGLESS_CACHING' if self.pairHMM else '',
+            emitRefConfident='--emitRefConfidence %s' % emitRefConfidence,
+            s=s,
+            **locals()
+        )
+
+        return 'cat {input} > {out_txt}'.format(
+            input=' '.join(map(str, (input_txts,))),
+            **locals()
+        )
 
 #######################################
 ## General tools   ##
