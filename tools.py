@@ -79,8 +79,13 @@ class Bam_To_BWA(Tool):
 	            {s[samtools]} index out.bam out.bai;
 
                 """
-        return (cmd_init + cmd_rg + cmd_main + cmd_out)
 
+        return (cmd_init + cmd_main + cmd_out), \
+               dict(
+                   inputs=_list2input(i['bam'], "-I "),
+                   s=s,
+                   **locals()
+               )
 
 # VCF to Annovar
 
@@ -173,7 +178,12 @@ class Indel_Realigner(Tool):
             -L {p[chrom]} {s[gatk_indelrealign]}
             {inputs};
         """
-        return (cmd_init + cmd_main + cmd_out),{'inputs': _list2input(i['bam'], "-I ")}
+        return (cmd_init + cmd_main + cmd_out), \
+               dict(
+                   inputs=_list2input(i['bam'], "-I "),
+                   s=s,
+                   **locals()
+               )
 
 
 class Mark_Duplicates(Tool):
@@ -201,7 +211,12 @@ class Mark_Duplicates(Tool):
 
             mv -f $tmpDir/out.metrics $OUT.metrics;
         """
-        return (cmd_init + cmd_main + cmd_out), {'inputs': _list2input(i['bam'], " INPUT=")}
+        return (cmd_init + cmd_main + cmd_out), \
+               dict(
+                   inputs=_list2input(i['bam'], "INPUT="),
+                   s=s,
+                   **locals()
+               )
 
 
 class BQSR(Tool):
@@ -243,7 +258,12 @@ class BQSR(Tool):
             {inputs};
 
             """
-        return (cmd_init + cmd_main + cmd_out), {'inputs': _list2input(i['bam'], "-I ")}
+        return (cmd_init + cmd_main + cmd_out), \
+               dict(
+                   inputs=_list2input(i['bam'], "-I "),
+                   s=s,
+                   **locals()
+               )
 
 
 # Mean to be used per sample
@@ -275,7 +295,12 @@ class Haplotype_Caller(Tool):
             {inputs};
 
             """
-        return (cmd_init + cmd_main + cmd_out_vcf), {'inputs': _list2input(i['bam'], "-I ")}
+        return (cmd_init + cmd_main + cmd_out_vcf), \
+               dict(
+                   inputs=_list2input(i['vcf'], "-I "),
+                   s=s,
+                   **locals()
+               )
 
 # Joint Genotyping
 class Genotype_GVCFs(Tool):
@@ -306,8 +331,12 @@ class Genotype_GVCFs(Tool):
             {inputs};
 
             """
-        return (cmd_init + cmd_main + cmd_out_vcf), {'inputs': _list2input(i['vcf'], "-V ")}
-
+        return (cmd_init + cmd_main + cmd_out_vcf), \
+               dict(
+                   inputs=_list2input(i['vcf'], "-V "),
+                   s=s,
+                   **locals()
+               )
 
 class VQSR(Tool):
     """
@@ -386,9 +415,12 @@ class VQSR(Tool):
         if p['skip_VQSR']:
             return " cp {i[vcf][0]} $OUT.vcf; cp {i[vcf][0]}.idx $OUT.vcf.idx; touch $OUT.R"
         else:
-            return (cmd_init + cmd_VQSR + cmd_rc + cmd_apply_VQSR + cmd_out_vcf), {
-                'inputs': _list2input(i['vcf'], "-input ")}
-
+            return (cmd_init + cmd_VQSR + cmd_rc + cmd_apply_VQSR + cmd_out_vcf), \
+               dict(
+                   inputs=_list2input(i['vcf'], "-input "),
+                   s=s,
+                   **locals()
+               )
 
 class Combine_Variants(Tool):
     name = "Combine Variants"
@@ -420,22 +452,12 @@ class Combine_Variants(Tool):
             {inputs};
 
         """
-        return (cmd_init + cmd_main + cmd_out_vcf), inputs =_list2input(i['vcf'], "-V "),
-
-     dict(
-            inputs=list2input(in_bams),
-            intervals=' --intervals {0}'.format(intervals) if intervals else '',
-            glm=' -glm {0}'.format(glm),
-            hmm='-pairHMM VECTOR_LOGLESS_CACHING' if self.pairHMM else '',
-            emitRefConfident='--emitRefConfidence %s' % emitRefConfidence,
-            s=s,
-            **locals()
-        )
-
-        return 'cat {input} > {out_txt}'.format(
-            input=' '.join(map(str, (input_txts,))),
-            **locals()
-        )
+        return (cmd_init + cmd_main + cmd_out_vcf), \
+               dict(
+                   inputs=_list2input(i['vcf'], "-V "),
+                   s=s,
+                   **locals()
+               )
 
 #######################################
 ## General tools   ##
