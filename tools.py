@@ -34,7 +34,7 @@ def _list2input(l, opt):
 
 # BWA
 
-class Bam_To_BWA(Tool):
+class BamToBWA(Tool):
     name = "BWA Alignement"
     cpu_req = 4
     mem_req = 12 * 1024
@@ -142,7 +142,7 @@ class Merge_Annotations(Tool):
 
 # Indel Realigner
 
-class Indel_Realigner(Tool):
+class IndelRealigner(Tool):
     name = "Indel Realigner"
     cpu_req = 4
     mem_req = 12 * 1024
@@ -186,7 +186,7 @@ class Indel_Realigner(Tool):
                )
 
 
-class Mark_Duplicates(Tool):
+class MarkDuplicates(Tool):
     name = "MarkDuplicates"
     cpu_req = 2
     mem_req = 4 * 1024
@@ -267,7 +267,7 @@ class BQSR(Tool):
 
 
 # Mean to be used per sample
-class Haplotype_Caller(Tool):
+class HaplotypeCaller(Tool):
     name = "Haplotype Caller"
     cpu_req = 4
     mem_req = 16 * 1024
@@ -303,7 +303,7 @@ class Haplotype_Caller(Tool):
                )
 
 # Joint Genotyping
-class Genotype_GVCFs(Tool):
+class GenotypeGVCFs(Tool):
     name = "Genotype GVCFs"
     cpu_req = 4
     mem_req = 12 * 1024
@@ -422,7 +422,7 @@ class VQSR(Tool):
                    **locals()
                )
 
-class Combine_Variants(Tool):
+class CombineVariants(Tool):
     name = "Combine Variants"
     cpu_req = 4  # max CPU here
     mem_req = 12 * 1024
