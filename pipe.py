@@ -122,17 +122,19 @@ def genomkey(execution):
     return test_pipeline
     """
 
+### Pipeline
+
+    add                 = recipe.add_source([Input(b, tags={'bam':sample_name})])
+    split               = recipe.add_stage(bam_bwa_split, parent=add)
+    align               = recipe.add_stage(tools.Bam_To_BWA, parent=split, rel=rel.One2one)
+    indel_realigner     = add_stage(tools.IndelRealigner, parent=align, rel=rel.Many2many([‘bam’, ‘rgId’], [chrom]))
+    mark_duplicates     = add_stage(tools.IndelRealigner, parent=indel_realigner, rel=rel.Many2many([‘bam’, ‘rgId’], [chrom]))
+    bqsr                = add_stage(tools.BQSR, parent=mark_duplicates, rel=rel.Many2one(['bam', 'chrom']))
+    haplotype_caller    = add_stage(tools.Haplotype_Caller, parent=bqsr, rel=rel.One2one)
+    genotype_gvcfs      = add_stage(tools.Genotype_GVCFs, parent=haplotype_caller, rel=Many2one(['chrom']))
+    vqsr                = add_stage(tools.VQSR, parent=genotype_gvcfs, rel=One2many([glm, skip_VQSR]), tag={'vcf':'main'})
 
 
-    add = recipe.add_source([tools.Echo(tags={'word': 'hello'}), tools.Echo(tags={'word': 'world'})])
-    align = recipe.add_stage(tools.Cat, echo, rel.One2many([('n', [1, 2])]))
-
-    add   = recipe.add_source([Input(b, tags={'bam':sample_name})])
-    split = recipe.add_stage(bam_bwa_split, parent=add)
-   # s = sequence_( add_([INPUT(b, tags={'bam':sample_name})], stage_name="Load BAMs"),
-
-
-    #                   split_(bam_bwa_split, pipes.Bam_To_BWA))
 
     execution.run(recipe)
 
@@ -144,45 +146,4 @@ if __name__ == '__main__':
     ex = Execution.start(cosmos_app, 'Simple', 'out/simple', max_attempts=3, restart=True, skip_confirm=True)
     genomkey(ex)
 
-
-    class HaplotypeCaller(Tool):
-    name = "HaplotypeCaller"
-    cpu_req = 8
-    mem_req = 16*1024
-     time_req = 12*60
-    inputs = [inp(format='bam', n='>0', forward=True), inp('target','bed',n=1)]
-    outputs = [out(format='vcf')]
-
-    def cmd(self, (in_bams, target_bed), out_vcf, intervals=None, glm='BOTH', emitRefConfidence='false'):
-
-        return r"""
-            {self.bin}
-            -T HaplotypeCaller \
-            -R {s[reference_fasta_path]} \
-            -nct {self.cpu_req} \
-            --dbsnp {s[dbsnp_path]} \
-            {inputs} \
-            -dcov 10000 \
-            -o {out_vcf} \
-            -A Coverage \
-            -A AlleleBalance \
-            -A AlleleBalanceBySample \
-            -A DepthPerAlleleBySample \
-            -A HaplotypeScore \
-            -A InbreedingCoeff \
-            -A QualByDepth \
-            -A FisherStrand \
-            -A MappingQualityRankSumTest \
-            {hmm} \
-            {intervals} \
-            {emitRefConfidence}
-        """, dict(
-            inputs=list2input(in_bams),
-            intervals=' --intervals {0}'.format(intervals) if intervals else '',
-            glm=' -glm {0}'.format(glm),
-            hmm='-pairHMM VECTOR_LOGLESS_CACHING' if self.pairHMM else '',
-            emitRefConfident='--emitRefConfidence %s' % emitRefConfidence,
-            s=s,
-            **locals()
-        )
 
