@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import pysam
 
@@ -60,10 +61,10 @@ def genomkey(execution):
 
         # restrict output for testing
         #if test_bam:
-            sn    = ['chr1']
-            chrom = ('chrom',[1])
-            glm   = ('glm',['SNP'])
-            skip_VQSR = ('skip_VQSR', [True])
+        sn    = ['chr1']
+        chrom = ('chrom',[1])
+        glm   = ('glm',['SNP'])
+        skip_VQSR = ('skip_VQSR', [True])
 
         #else:
         #    skip_VQSR = ('skip_VQSR', [False])
@@ -79,19 +80,19 @@ def genomkey(execution):
         #    indelrealign_reduce =  ['bam']
         #else:
 
-            bam_bwa_split = [ ('rgId', rgid), ('prevSn', sn), ('chromosome_only_split', [False]) ]
+        bam_bwa_split = [ ('rgId', rgid), ('prevSn', sn), ('chromosome_only_split', [False]) ]
 
-            indelrealign_reduce =  ['bam','rgId']
+        indelrealign_reduce =  ['bam','rgId']
 
         #s = sequence_( add_([INPUT(b, tags={'bam':sample_name})], stage_name="Load BAMs"),
-         #              split_(bam_bwa_split, pipes.Bam_To_BWA))
+            #              split_(bam_bwa_split, pipes.Bam_To_BWA))
 
         #if bam_seq is None:   bam_seq = s
         #else:                 bam_seq = sequence_(bam_seq, s, combine=True)
 
 
     """# Previous pipeline
-    pr_pipeline = sequence_(
+    #pr_pipeline = sequence_(
         bam_seq,
         reduce_split_(indelrealign_reduce, [chrom], pipes.IndelRealigner),
         map_(                                  pipes.MarkDuplicates),
@@ -99,7 +100,7 @@ def genomkey(execution):
         map_(                                  pipes.ReduceReads),
         reduce_split_(['chrom'], [glm],        pipes.UnifiedGenotyper),
         reduce_(['glm'],                       pipes.VariantQualityScoreRecalibration, tag={'vcf':'main'}),
-        reduce_(['vcf'],                       pipes.CombineVariants, "Merge VCF"),
+    ###   reduce_(['vcf'],                       pipes.CombineVariants, Merge VCF),
         map_(                                  pipes.Vcf2Anno_in),
         split_([dbnames],                      pipes.Annotate, tag={'build':'hg19'}),
         reduce_(['vcf'],                       pipes.MergeAnnotations)
@@ -127,8 +128,8 @@ def genomkey(execution):
     add                 = recipe.add_source([Input(b, tags={'bam':sample_name})])
     split               = recipe.add_stage(bam_bwa_split, parent=add)
     align               = recipe.add_stage(tools.Bam_To_BWA, parent=split, rel=rel.One2one)
-    indel_realigner     = add_stage(tools.IndelRealigner, parent=align, rel=rel.Many2many([‘bam’, ‘rgId’], [chrom]))
-    mark_duplicates     = add_stage(tools.IndelRealigner, parent=indel_realigner, rel=rel.Many2many([‘bam’, ‘rgId’], [chrom]))
+    indel_religner      = recipe.add_stage(tools.Bam_To_BWA, parent=align, rel=rel.Many2many(['bam', 'rgId'], ['chrom']))
+    mark_duplicates     = add_stage(tools.IndelRealigner, parent=indel_realigner, rel=rel.Many2many(['bam', 'rgId'], ['chrom']))
     bqsr                = add_stage(tools.BQSR, parent=mark_duplicates, rel=rel.Many2one(['bam', 'chrom']))
     haplotype_caller    = add_stage(tools.Haplotype_Caller, parent=bqsr, rel=rel.One2one)
     genotype_gvcfs      = add_stage(tools.Genotype_GVCFs, parent=haplotype_caller, rel=Many2one(['chrom']))
