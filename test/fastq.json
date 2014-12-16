@@ -1,0 +1,242 @@
+[
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003168-1", 
+    "platform": "ILLUMINA", 
+    "rgid": "120099.no_6161", 
+    "sample_name": "120099", 
+    "pair": 2, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/120099_120099.no_6161_001_2", 
+    "platform_unit": "120099.no_6161"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003151-1", 
+    "platform": "ILLUMINA", 
+    "rgid": "111582.no_8753", 
+    "sample_name": "111582", 
+    "pair": 1, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/111582_111582.no_8753_001_1", 
+    "platform_unit": "111582.no_8753"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003168-1", 
+    "platform": "ILLUMINA", 
+    "rgid": "120099.no_618", 
+    "sample_name": "120099", 
+    "pair": 2, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/120099_120099.no_618_001_2", 
+    "platform_unit": "120099.no_618"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003152-1", 
+    "platform": "ILLUMINA", 
+    "rgid": "111582.no_9494", 
+    "sample_name": "111582", 
+    "pair": 1, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/111582_111582.no_9494_001_1", 
+    "platform_unit": "111582.no_9494"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003152-1", 
+    "platform": "ILLUMINA", 
+    "rgid": "111582.no_9494", 
+    "sample_name": "111582", 
+    "pair": 2, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/111582_111582.no_9494_001_2", 
+    "platform_unit": "111582.no_9494"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003168-1", 
+    "platform": "ILLUMINA", 
+    "rgid": "120099.no_618", 
+    "sample_name": "120099", 
+    "pair": 1, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/120099_120099.no_618_001_1", 
+    "platform_unit": "120099.no_618"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003152-1", 
+    "platform": "ILLUMINA", 
+    "rgid": "111582.no_3644", 
+    "sample_name": "111582", 
+    "pair": 1, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/111582_111582.no_3644_001_1", 
+    "platform_unit": "111582.no_3644"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003152-1", 
+    "platform": "ILLUMINA", 
+    "rgid": "111582.no_3644", 
+    "sample_name": "111582", 
+    "pair": 2, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/111582_111582.no_3644_001_2", 
+    "platform_unit": "111582.no_3644"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003249-3", 
+    "platform": "ILLUMINA", 
+    "rgid": "125731.no_2204", 
+    "sample_name": "125731", 
+    "pair": 2, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/125731_125731.no_2204_001_2", 
+    "platform_unit": "125731.no_2204"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003151-1", 
+    "platform": "ILLUMINA", 
+    "rgid": "111582.no_8753", 
+    "sample_name": "111582", 
+    "pair": 2, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/111582_111582.no_8753_001_2", 
+    "platform_unit": "111582.no_8753"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003250-3", 
+    "platform": "ILLUMINA", 
+    "rgid": "125731.no_9040", 
+    "sample_name": "125731", 
+    "pair": 2, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/125731_125731.no_9040_001_2", 
+    "platform_unit": "125731.no_9040"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003168-1", 
+    "platform": "ILLUMINA", 
+    "rgid": "120099.no_6161", 
+    "sample_name": "120099", 
+    "pair": 1, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/120099_120099.no_6161_001_1", 
+    "platform_unit": "120099.no_6161"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003249-3", 
+    "platform": "ILLUMINA", 
+    "rgid": "125731.no_6935", 
+    "sample_name": "125731", 
+    "pair": 1, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/125731_125731.no_6935_001_1", 
+    "platform_unit": "125731.no_6935"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003250-3", 
+    "platform": "ILLUMINA", 
+    "rgid": "125731.no_9040", 
+    "sample_name": "125731", 
+    "pair": 1, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/125731_125731.no_9040_001_1", 
+    "platform_unit": "125731.no_9040"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003249-3", 
+    "platform": "ILLUMINA", 
+    "rgid": "125731.no_2204", 
+    "sample_name": "125731", 
+    "pair": 1, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/125731_125731.no_2204_001_1", 
+    "platform_unit": "125731.no_2204"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003249-3", 
+    "platform": "ILLUMINA", 
+    "rgid": "125731.no_6935", 
+    "sample_name": "125731", 
+    "pair": 2, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/125731_125731.no_6935_001_2", 
+    "platform_unit": "125731.no_6935"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003167-1", 
+    "platform": "ILLUMINA", 
+    "rgid": "120099.no_9371", 
+    "sample_name": "120099", 
+    "pair": 1, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/120099_120099.no_9371_001_1", 
+    "platform_unit": "120099.no_9371"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003167-1", 
+    "platform": "ILLUMINA", 
+    "rgid": "120099.no_9371", 
+    "sample_name": "120099", 
+    "pair": 2, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/120099_120099.no_9371_001_2", 
+    "platform_unit": "120099.no_9371"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003151-1", 
+    "platform": "ILLUMINA", 
+    "rgid": "111582.no_3642", 
+    "sample_name": "111582", 
+    "pair": 1, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/111582_111582.no_3642_001_1", 
+    "platform_unit": "111582.no_3642"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003151-1", 
+    "platform": "ILLUMINA", 
+    "rgid": "111582.no_3642", 
+    "sample_name": "111582", 
+    "pair": 2, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/111582_111582.no_3642_001_2", 
+    "platform_unit": "111582.no_3642"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003167-1", 
+    "platform": "ILLUMINA", 
+    "rgid": "120099.no_5572", 
+    "sample_name": "120099", 
+    "pair": 1, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/120099_120099.no_5572_001_1", 
+    "platform_unit": "120099.no_5572"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003167-1", 
+    "platform": "ILLUMINA", 
+    "rgid": "120099.no_5572", 
+    "sample_name": "120099", 
+    "pair": 2, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/120099_120099.no_5572_001_2", 
+    "platform_unit": "120099.no_5572"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003250-3", 
+    "platform": "ILLUMINA", 
+    "rgid": "125731.no_4171", 
+    "sample_name": "125731", 
+    "pair": 1, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/125731_125731.no_4171_001_1", 
+    "platform_unit": "125731.no_4171"
+  }, 
+  {
+    "chunk": "001", 
+    "library": "SZAIPI003250-3", 
+    "platform": "ILLUMINA", 
+    "rgid": "125731.no_4171", 
+    "sample_name": "125731", 
+    "pair": 2, 
+    "path": "/home/esg21/projects/GenomeKey/test/fastq/125731_125731.no_4171_001_2", 
+    "platform_unit": "125731.no_4171"
+  }
+]
