@@ -36,13 +36,13 @@ def _getSeqName(header):
 
     return seqNameList
 
-def genomkey(execution):
+def genomkey(execution, bams, test_bam=False, chromosome_only_split=False):
     recipe = Recipe()
 #
 # def genomekey(bams, test_bam=False, chromosome_only_split=False):
 
     # split_ tuples
-    #chrom  = ('chrom', range(1,23) + ['X', 'Y', 'MT'])
+    chrom  = ('chrom', range(1,23) + ['X', 'Y', 'MT'])
     chrom  = ('chrom', range(1,23))
 
     glm = ('glm', ['SNP', 'INDEL'])
@@ -51,7 +51,7 @@ def genomkey(execution):
                           'PolyPhen2','Mutation_Taster','GERP','PhyloP','LRT','Mce46way','Complete_Genomics_69','The_1000g_Febuary_all','The_1000g_April_all',
                           'NHLBI_Exome_Project_euro','NHLBI_Exome_Project_aa','NHLBI_Exome_Project_all','ENCODE_DNaseI_Hypersensitivity','ENCODE_Transcription_Factor',
                           'UCSC_Gene','Refseq_Gene','Ensembl_Gene','CCDS_Gene','HGMD_INDEL','HGMD_SNP','GWAS_Catalog'])
-    #bam_seq = None
+    bam_seq = None
 
     for b in bams:
         header = _getHeaderInfo(b)
@@ -127,12 +127,12 @@ def genomkey(execution):
 
     add                 = recipe.add_source([Input(b, tags={'bam':sample_name})])
     split               = recipe.add_stage(bam_bwa_split, parent=add)
-    align               = recipe.add_stage(tools.Bam_To_BWA, parent=split, rel=rel.One2one)
-    indel_religner      = recipe.add_stage(tools.Bam_To_BWA, parent=align, rel=rel.Many2many(['bam', 'rgId'], ['chrom']))
-    mark_duplicates     = add_stage(tools.IndelRealigner, parent=indel_realigner, rel=rel.Many2many(['bam', 'rgId'], ['chrom']))
+    align               = recipe.add_stage(tools.BamToBWA, parent=split, rel=rel.One2one)
+    indel_religner      = recipe.add_stage(tools.IndelRealigner, parent=align, rel=rel.Many2many(['bam', 'rgId'], ['chrom']))
+    mark_duplicates     = add_stage(tools.MarkDuplicates, parent=indel_realigner, rel=rel.Many2many(['bam', 'rgId'], ['chrom']))
     bqsr                = add_stage(tools.BQSR, parent=mark_duplicates, rel=rel.Many2one(['bam', 'chrom']))
-    haplotype_caller    = add_stage(tools.Haplotype_Caller, parent=bqsr, rel=rel.One2one)
-    genotype_gvcfs      = add_stage(tools.Genotype_GVCFs, parent=haplotype_caller, rel=Many2one(['chrom']))
+    haplotype_caller    = add_stage(tools.HaplotypeCaller, parent=bqsr, rel=rel.One2one)
+    genotype_gvcfs      = add_stage(tools.GenotypeGVCFs, parent=haplotype_caller, rel=Many2one(['chrom']))
     vqsr                = add_stage(tools.VQSR, parent=genotype_gvcfs, rel=One2many([glm, skip_VQSR]), tag={'vcf':'main'})
 
 
