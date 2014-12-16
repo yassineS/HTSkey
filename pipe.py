@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 import os
 import pysam
 
@@ -36,7 +37,11 @@ def _getSeqName(header):
 
     return seqNameList
 
+<<<<<<< HEAD
 def genomkey(execution, bams, test_bam=False, chromosome_only_split=False):
+=======
+def genomkey(execution, test_bam=False, chromosome_only_split=False):
+>>>>>>> 8f6e213ebc59785ee1c90b864387ec78c46dc5ea
     recipe = Recipe()
 #
 # def genomekey(bams, test_bam=False, chromosome_only_split=False):
@@ -61,10 +66,10 @@ def genomkey(execution, bams, test_bam=False, chromosome_only_split=False):
 
         # restrict output for testing
         #if test_bam:
-        sn    = ['chr1']
-        chrom = ('chrom',[1])
-        glm   = ('glm',['SNP'])
-        skip_VQSR = ('skip_VQSR', [True])
+            sn    = ['chr1']
+            chrom = ('chrom',[1])
+            glm   = ('glm',['SNP'])
+            skip_VQSR = ('skip_VQSR', [True])
 
         #else:
         #    skip_VQSR = ('skip_VQSR', [False])
@@ -130,6 +135,12 @@ def genomkey(execution, bams, test_bam=False, chromosome_only_split=False):
     align               = recipe.add_stage(tools.BamToBWA, parent=split, rel=rel.One2one)
     indel_religner      = recipe.add_stage(tools.IndelRealigner, parent=align, rel=rel.Many2many(['bam', 'rgId'], ['chrom']))
     mark_duplicates     = add_stage(tools.MarkDuplicates, parent=indel_realigner, rel=rel.Many2many(['bam', 'rgId'], ['chrom']))
+<<<<<<< HEAD
+=======
+    align               = recipe.add_stage(tools.Bam_To_BWA, parent=split, rel=rel.One2one)
+    indel_religner      = recipe.add_stage(tools.Bam_To_BWA, parent=align, rel=rel.Many2many(['bam', 'rgId'], ['chrom']))
+    mark_duplicates     = add_stage(tools.IndelRealigner, parent=indel_realigner, rel=rel.Many2many(['bam', 'rgId'], ['chrom']))
+>>>>>>> 8f6e213ebc59785ee1c90b864387ec78c46dc5ea
     bqsr                = add_stage(tools.BQSR, parent=mark_duplicates, rel=rel.Many2one(['bam', 'chrom']))
     haplotype_caller    = add_stage(tools.HaplotypeCaller, parent=bqsr, rel=rel.One2one)
     genotype_gvcfs      = add_stage(tools.GenotypeGVCFs, parent=haplotype_caller, rel=Many2one(['chrom']))
